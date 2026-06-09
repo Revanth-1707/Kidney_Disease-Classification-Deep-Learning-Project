@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: cnnClassifier
+Version: 0.0.0
+Summary: A machine learning project for kidney disease classification using CNN, MLflow, and DVC.
+Home-page: https://github.com/Revanth-1707/Kidney_Disease-Classification-Deep-Learning-Project
+Author: Revanth-1707
+Author-email: entbappy@example.com
+Project-URL: Bug Tracker, https://github.com/Revanth-1707/Kidney_Disease-Classification-Deep-Learning-Project/issues
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: project-url
+Dynamic: summary
