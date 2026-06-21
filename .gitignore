@@ -27,5 +27,5 @@ secrets.yaml
 credentials.json
 
 
-artifacts/*
-logs/*
+artifacts/
+logs/
