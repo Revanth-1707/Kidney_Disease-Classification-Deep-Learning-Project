@@ -7,6 +7,7 @@ import joblib
 from ensure import ensure_annotations
 from pathlib import Path
 from typing import Any
+from box import ConfigBox
 import base64
 
 @ensure_annotations
@@ -34,7 +35,7 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
         raise e
     
 
-@ensure_annotations
+
 def create_directories(path_to_directories: list, verbose: bool = True) -> None:
     """create list of directories
     
@@ -80,3 +81,15 @@ def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         return encoded_string.decode('utf-8')
+    
+def get_size(path: Path) -> str:
+    """get size in KB
+    
+    Args:
+        path (Path): path to file
+    
+    Returns:
+        str: size in KB
+    """
+    size_in_kb = os.path.getsize(path) / 1024
+    return f"{size_in_kb:.2f} KB"
