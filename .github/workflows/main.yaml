@@ -114,3 +114,26 @@ jobs:
       - name: Remove unused Docker images
         run: |
           docker image prune -f
+
+      - name: Download Trivy HTML Template
+        run: |
+          mkdir -p contrib
+          curl -L https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl \
+            -o contrib/html.tpl
+
+      - name: Generate Trivy HTML Report
+        run: |
+          trivy image \
+            --pkg-types os \
+            --severity HIGH,CRITICAL \
+            --format template \
+            --template "@contrib/html.tpl" \
+            -o trivy-report.html \
+            ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest || true
+
+      - name: Upload Trivy HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-html-report
+          path: trivy-report.html
+          if-no-files-found: ignore
