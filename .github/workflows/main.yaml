@@ -66,10 +66,10 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -80,20 +80,20 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Pull latest image
+      - name: Pull Latest Docker Image
         run: |
           docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
-      - name: Create monitoring network
+      - name: Create Monitoring Network
         run: |
-          docker network create monitoring-net || true
+          docker network inspect monitoring-net >/dev/null 2>&1 || docker network create monitoring-net
 
-      - name: Stop and remove old container
+      - name: Stop Existing Application Container
         run: |
           docker stop cnncls || true
           docker rm cnncls || true
 
-      - name: Run Docker Container
+      - name: Run Latest Application Container
         run: |
           docker run -d \
             --name cnncls \
@@ -104,21 +104,19 @@ jobs:
             -e AWS_REGION=${{ secrets.AWS_REGION }} \
             ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
-      - name: Deploy Prometheus
+      - name: Deploy Prometheus & Grafana
         run: |
           cd monitoring
-          docker compose -f docker-compose.monitoring.yml down || true
-          docker compose -f docker-compose.monitoring.yml pull
           docker compose -f docker-compose.monitoring.yml up -d
 
-      - name: Remove unused Docker images
+      - name: Remove Unused Docker Images
         run: |
           docker image prune -f
 
       - name: Download Trivy HTML Template
         run: |
           mkdir -p contrib
-          curl -L https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl \
+          curl -fsSL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl \
             -o contrib/html.tpl
 
       - name: Generate Trivy HTML Report
