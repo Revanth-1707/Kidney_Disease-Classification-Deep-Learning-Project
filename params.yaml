@@ -6,10 +6,10 @@ BATCH_SIZE: 16
 
 INCLUDE_TOP: False
 
-EPOCHS: 10
+EPOCHS: 1
 
 CLASSES: 4
 
 WEIGHTS: imagenet
 
-learning_rate: 0.0001
+LEARNING_RATE: 0.0001
