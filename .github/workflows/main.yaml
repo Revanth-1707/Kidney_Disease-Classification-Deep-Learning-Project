@@ -104,6 +104,13 @@ jobs:
             -e AWS_REGION=${{ secrets.AWS_REGION }} \
             ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
+      - name: Deploy Prometheus
+        run: |
+          cd monitoring
+          docker compose -f docker-compose.monitoring.yml down || true
+          docker compose -f docker-compose.monitoring.yml pull
+          docker compose -f docker-compose.monitoring.yml up -d
+
       - name: Remove unused Docker images
         run: |
           docker image prune -f
