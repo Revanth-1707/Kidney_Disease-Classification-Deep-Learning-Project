@@ -16,4 +16,5 @@ scipy
 Flask
 Flask-Cors
 gdown
+prometheus-client==0.20.0
 -e .
