@@ -17,4 +17,7 @@ Flask
 Flask-Cors
 gdown
 prometheus-client==0.20.0
+prometheus-client==0.20.0
+evidently==0.4.33
+Pillow
 -e .
